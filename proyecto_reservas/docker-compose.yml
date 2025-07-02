@@ -1,0 +1,26 @@
+version: '3.8' 
+
+services:
+  
+  db:
+    image: mysql:8.0 
+    container_name: mysql_db_reservas 
+    restart: always 
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword 
+      MYSQL_DATABASE: reservas_db 
+      MYSQL_USER: user 
+      MYSQL_PASSWORD: password 
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./backend/db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql-data:
